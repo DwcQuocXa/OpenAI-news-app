@@ -5,13 +5,14 @@ import { BuildSpec, ComputeType, LinuxBuildImage, PipelineProject } from 'aws-cd
 import { CodeBuildAction, CodeBuildActionType, S3DeployAction } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Vpc } from 'aws-cdk-lib/aws-ec2/lib/vpc';
-import { RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
+import { aws_ecs as ecs, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import { CDKContext } from '../bin/_infrastructure';
 import { Distribution } from 'aws-cdk-lib/aws-cloudfront';
 import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
 import { readFileSync } from 'fs';
+import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 
 export interface FrontendPipelineStackProps extends StackProps {
     vpc: Vpc;
@@ -25,9 +26,13 @@ export class FrontendPipelineStack extends Stack {
 
         const CODE_STAR_CONNECTION_ARN = config.CODE_STAR_CONNECTION_ARN as string;
 
-        console.log('CODE_STAR_CONNECTION_ARN', CODE_STAR_CONNECTION_ARN);
-
         const { vpc } = props;
+
+        const secret = Secret.fromSecretNameV2(
+            this,
+            `news-app-frontend-${context.environment}`,
+            `news-app-frontend-${context.environment}`,
+        );
 
         const buildRole = new Role(this, 'CodeBuildRole', {
             assumedBy: new ServicePrincipal('codebuild.amazonaws.com'),
@@ -43,7 +48,9 @@ export class FrontendPipelineStack extends Stack {
                 computeType: ComputeType.MEDIUM, // 7 GB memory, 4 vCPUs
                 buildImage: LinuxBuildImage.STANDARD_6_0,
                 privileged: true,
-                environmentVariables: {},
+                environmentVariables: {
+                    API_URL: { value: ecs.Secret.fromSecretsManager(secret, 'API_URL') },
+                },
             },
             vpc,
             role: buildRole,

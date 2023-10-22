@@ -17,9 +17,8 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building frontend
-      - ng build
-    artifacts:
-      files:
-        - '**/*'
-      base-directory: 'dist/frontend'
-      discard-paths: 'yes'
+      - ng build --configuration=test
+artifacts:
+  files:
+    - '**/*'
+  base-directory: 'frontend/dist/frontend'
