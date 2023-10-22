@@ -1,0 +1,11 @@
+<div class="field">
+    <label [htmlFor]="name" [id]="name">{{ getFieldLabel() }}</label>
+    <input
+        pInputText
+        [attr.aria-label]="name"
+        type="text"
+        [readonly]="readonly"
+        [style]="{ height: '40px', width: width ? 'width: ' + width + 'px;' : '100%' }"
+        [formControl]="formControl"
+    />
+</div>

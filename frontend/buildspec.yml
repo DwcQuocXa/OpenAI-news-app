@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo installing dependencies
+      - npm install
+      - echo installing aws cli
+      - pip install awscli --upgrade --user
+      - echo check version
+      - aws --version
+      - echo installing angular cli
+      - npm i -g @angular/cli
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building frontend
+      - ng build
+    artifacts:
+      files:
+        - '**/*'
+      base-directory: 'dist/frontend'
+      discard-paths: 'yes'

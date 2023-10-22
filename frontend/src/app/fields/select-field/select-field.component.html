@@ -1,0 +1,20 @@
+<div class="field" style="min-width: 180px">
+    <label class="block" [htmlFor]="name">{{ getFieldLabel() }}</label>
+    <p-dropdown
+        ariaLabel="{{ getFieldLabel() }}"
+        class="block"
+        [options]="options"
+        [formControl]="formControl"
+        optionValue="id"
+        optionLabel="label"
+        [showClear]="true"
+        [style]="{ height: '40px', width: width ? 'width: ' + width + 'px;' : '100%' }"
+    >
+        <ng-template pTemplate="selectedItem" let-type>
+            {{ type.label }}
+        </ng-template>
+        <ng-template pTemplate="item" let-type>
+            {{ type.label }}
+        </ng-template>
+    </p-dropdown>
+</div>

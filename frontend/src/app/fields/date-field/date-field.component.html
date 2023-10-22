@@ -1,0 +1,12 @@
+<div class="field">
+    <label [htmlFor]="name" [id]="name">{{ getFieldLabel() }}</label>
+    <p-calendar
+        [formControl]="formControl"
+        [attr.aria-label]="name"
+        [style]="{ height: '40px', width: width ? 'width: ' + width + 'px;' : '100%' }"
+        dateFormat="dd-mm-yy"
+        [showIcon]="true"
+        [minDate]="minDate"
+        [maxDate]="maxDate"
+    ></p-calendar>
+</div>
