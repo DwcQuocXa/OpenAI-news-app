@@ -41,7 +41,7 @@ export class FrontendPipelineStack extends Stack {
             buildSpec: BuildSpec.fromSourceFilename('./frontend/buildspec.yml'),
             environment: {
                 computeType: ComputeType.MEDIUM, // 7 GB memory, 4 vCPUs
-                buildImage: LinuxBuildImage.AMAZON_LINUX_2_3,
+                buildImage: LinuxBuildImage.STANDARD_6_0,
                 privileged: true,
                 environmentVariables: {},
             },
@@ -142,7 +142,7 @@ export class FrontendPipelineStack extends Stack {
                     stageName: 'Deploy',
                     actions: [
                         new S3DeployAction({
-                            actionName: 'DeployReactApp',
+                            actionName: 'Deploy',
                             input: buildOutput,
                             bucket: websiteBucket,
                             runOrder: 1,

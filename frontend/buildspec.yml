@@ -3,14 +3,14 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 18
+      nodejs: 16
     commands:
       - echo installing dependencies
+      - cd _infrastructure
       - npm install
-      - echo installing aws cli
-      - pip install awscli --upgrade --user
-      - echo check version
-      - aws --version
+      - cd ..
+      - cd frontend
+      - npm install --legacy-peer-deps
       - echo installing angular cli
       - npm i -g @angular/cli
   build:
