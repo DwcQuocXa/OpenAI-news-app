@@ -1,5 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 import { getNewsEverything } from '@functions/news';
+import { postArticleSummaryMessage, postNewMessage, postNewsSummaryMessage } from '@functions/chat';
 
 const serverlessConfiguration: AWS = {
     service: 'news-app-serverless',
@@ -8,18 +9,46 @@ const serverlessConfiguration: AWS = {
     provider: {
         name: 'aws',
         runtime: 'nodejs14.x',
+        timeout: 30,
         apiGateway: {
             minimumCompressionSize: 1024,
             shouldStartNameWithService: true,
+        },
+        httpApi: {
+            cors: true,
         },
         environment: {
             AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
             NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
         },
         region: 'eu-west-1',
+        /*iam: {
+            role: {
+                statements: [
+                    {
+                        Effect: 'Allow',
+                        Action: ['execute-api:ManageConnections'],
+                        Resource: 'arn:aws:execute-api:*:*:**!/@connections/!*',
+                    },
+                    {
+                        Effect: 'Allow',
+                        Action: [
+                            'dynamodb:DescribeTable',
+                            'dynamodb:Query',
+                            'dynamodb:Scan',
+                            'dynamodb:GetItem',
+                            'dynamodb:PutItem',
+                            'dynamodb:UpdateItem',
+                            'dynamodb:DeleteItem',
+                        ],
+                        Resource: 'arn:aws:dynamodb:eu-west-1:*:table/ChatConnectionsTable',
+                    },
+                ],
+            },
+        },*/
     },
     // import the function via paths
-    functions: { getNewsEverything },
+    functions: { getNewsEverything, postNewsSummaryMessage, postNewMessage, postArticleSummaryMessage },
     package: { individually: true },
     custom: {
         esbuild: {
@@ -34,6 +63,32 @@ const serverlessConfiguration: AWS = {
         },
     },
     useDotenv: true,
+    /*resources: {
+        Resources: {
+            ChatConnectionsTable: {
+                Type: 'AWS::DynamoDB::Table',
+                Properties: {
+                    TableName: 'ChatConnectionsTable',
+                    AttributeDefinitions: [
+                        {
+                            AttributeName: 'connectionId',
+                            AttributeType: 'S',
+                        },
+                    ],
+                    KeySchema: [
+                        {
+                            AttributeName: 'connectionId',
+                            KeyType: 'HASH',
+                        },
+                    ],
+                    ProvisionedThroughput: {
+                        ReadCapacityUnits: 5,
+                        WriteCapacityUnits: 5,
+                    },
+                },
+            },
+        },
+    },*/
 };
 
 module.exports = serverlessConfiguration;

@@ -72,15 +72,9 @@ export class FrontendPipelineStack extends Stack {
         const websiteBucket = new Bucket(this, 'websiteBucket', {
             bucketName: `news-app-frontend-${context.environment}`,
             websiteIndexDocument: 'index.html',
-            websiteErrorDocument: 'error.html',
+            websiteErrorDocument: 'index.html',
             publicReadAccess: true,
             removalPolicy: RemovalPolicy.DESTROY,
-            blockPublicAccess: {
-                restrictPublicBuckets: false,
-                blockPublicAcls: false,
-                ignorePublicAcls: false,
-                blockPublicPolicy: false,
-            },
         });
 
         const distribution = new Distribution(this, `news-app-frontend-${context.environment}-distribution`, {

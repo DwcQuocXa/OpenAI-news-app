@@ -8,6 +8,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { DataViewModule } from 'primeng/dataview';
 import { RatingModule } from 'primeng/rating';
 import { TagModule } from 'primeng/tag';
+import { DividerModule } from 'primeng/divider';
+import { SplitterModule } from 'primeng/splitter';
 
 @NgModule({
     declarations: [NewsComponent],
@@ -21,6 +23,8 @@ import { TagModule } from 'primeng/tag';
         DataViewModule,
         RatingModule,
         TagModule,
+        DividerModule,
+        SplitterModule,
     ],
 })
 export class ComponentsModule {}

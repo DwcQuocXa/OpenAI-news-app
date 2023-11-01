@@ -10,6 +10,7 @@ const formatResponse = (statusCode: number, data: any) => {
     return {
         statusCode,
         body: JSON.stringify(data),
+        headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': true },
     };
 };
 

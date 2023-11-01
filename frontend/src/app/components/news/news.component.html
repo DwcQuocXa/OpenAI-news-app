@@ -1,60 +1,103 @@
-<div class="grid centered-container">
-    <div class="col-12">
-        <div class="card">
-            <h2>Search for News!</h2>
-            <form class="p-fluid p-formgrid grid" [formGroup]="searchForm">
-                <div class="field col-6">
-                    <app-text-field name="Search" formControlName="q"></app-text-field>
-                </div>
-                <div class="field col-3">
-                    <app-date-field
-                        name="From"
-                        formControlName="from"
-                        [minDate]="minDate"
-                        [maxDate]="maxDate"
-                    ></app-date-field>
-                </div>
-                <div class="field col-3">
-                    <app-date-field
-                        name="To"
-                        formControlName="to"
-                        [minDate]="minDate"
-                        [maxDate]="maxDate"
-                    ></app-date-field>
-                </div>
-            </form>
-            <p-button label="Search" icon="pi pi-search" iconPos="right" (click)="search()"></p-button>
-        </div>
-        <div class="card">
-            <p-dataView #dv [value]="articles" [rows]="10" [paginator]="true">
-                <ng-template let-article pTemplate="listItem">
-                    <div class="col-12">
-                        <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-                            <img
-                                class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-                                [src]="article.urlToImage"
-                                [alt]="article.title"
-                            />
-                            <div
-                                class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
-                            >
-                                <div class="flex flex-column align-items-center sm:align-items-start gap-3">
-                                  <a [href]="article.url" target="_blank" class="text-xl font-bold text-900">{{ article.title }}</a>
-                                    <div class="flex align-items-center gap-3">
-                                        <span>{{ article.description }}</span>
-                                    </div>
-                                    <div class="flex align-items-center gap-3">
-                                        <span class="font-semibold">{{ article.source.name }} | {{ article.author }}</span>
-                                    </div>
-                                    <div class="flex align-items-center gap-3">
-                                        <span>{{ formatDate(article.publishedAt) }}</span>
+<div class="flex max-w-screen">
+    <div class="grid news-container w-9 max-h-screen">
+        <div class="col-12">
+            <div class="card">
+                <h2>Search for News!</h2>
+                <form class="p-fluid p-formgrid grid" [formGroup]="searchForm">
+                    <div class="field col-6">
+                        <app-text-field name="Search" formControlName="q"></app-text-field>
+                    </div>
+                    <div class="field col-3">
+                        <app-date-field
+                            name="From"
+                            formControlName="from"
+                            [minDate]="minDate"
+                            [maxDate]="maxDate"
+                        ></app-date-field>
+                    </div>
+                    <div class="field col-3">
+                        <app-date-field
+                            name="To"
+                            formControlName="to"
+                            [minDate]="minDate"
+                            [maxDate]="maxDate"
+                        ></app-date-field>
+                    </div>
+                </form>
+                <p-button label="Search" icon="pi pi-search" iconPos="right" (click)="search()"></p-button>
+            </div>
+            <div class="card">
+                <p-dataView #dv [value]="articles" [rows]="10" [paginator]="true">
+                    <ng-template let-article pTemplate="listItem">
+                        <div class="col-12">
+                            <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
+                                <img
+                                    class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+                                    [src]="article.urlToImage"
+                                    [alt]="article.title"
+                                />
+                                <div
+                                    class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
+                                >
+                                    <div class="flex flex-column align-items-center sm:align-items-start gap-3">
+                                        <a [href]="article.url" target="_blank" class="text-xl font-bold text-900">{{
+                                            article.title
+                                        }}</a>
+                                        <div class="flex align-items-center gap-3">
+                                            <span>{{ article.description }}</span>
+                                        </div>
+                                        <div class="flex align-items-center gap-3">
+                                            <span class="font-semibold"
+                                                >{{ article.source.name }} | {{ article.author }}</span
+                                            >
+                                        </div>
+                                        <div class="flex align-items-center gap-3">
+                                            <span>{{ formatDate(article.publishedAt) }}</span>
+                                        </div>
+                                      <div class="flex align-items-center gap-3">
+                                        <p-button
+                                          class=""
+                                          label="Chat about this news"
+                                          icon="pi pi-send"
+                                          iconPos="right"
+                                          (click)="selectArticleToChat(article)"
+                                        ></p-button>
+                                      </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </ng-template>
-            </p-dataView>
+                    </ng-template>
+                </p-dataView>
+            </div>
+        </div>
+    </div>
+    <!--<p-divider layout="vertical"></p-divider>-->
+    <div class="right w-3 px-3 max-h-screen">
+        <div class="w-12 max-h-screen">
+            <div #scrollMe class="chat-container">
+                <div
+                    *ngFor="let message of chatMessages"
+                    class="flex flex-column p-2 m-1 border-round-xl"
+                    [ngClass]="message.sender === 'user' ? 'user-message' : 'gpt-message'"
+                >
+                    <div class="font-bold mb-1">{{ message.sender }}</div>
+                    <div class="p-2 border-round-lg">{{ message.content }}</div>
+                    <div class="text-xs font-light">{{ message.time | date : 'short' }}</div>
+                </div>
+                <div class="flex absolute bottom-0 h-3rem">
+                    <form class="" [formGroup]="inputForm">
+                        <app-text-field class="field input-100" formControlName="input"></app-text-field>
+                    </form>
+                    <p-button
+                        class=""
+                        label="Send"
+                        icon="pi pi-send"
+                        iconPos="right"
+                        (click)="sendMessage()"
+                    ></p-button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -1,4 +1,22 @@
-.centered-container {
-  max-width: 50rem;
+.news-container {
+  overflow: auto;
+}
+
+.chat-container {
   margin: 0 auto;
+  padding: 10px;
+  overflow: auto;
+  height: calc(100vh - 3rem);
+}
+
+.user-message {
+  background-color: #007BFF;
+  color: #fff;
+  align-self: flex-end;
+}
+
+.gpt-message {
+  background-color: #e6e6e6;
+  color: #000;
+  align-self: flex-start;
 }

@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { formatInternalServerErrorResponse, formatSuccessResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import NewsApiService from '../../service/news_client';
+import NewsApiService from '../../service/news.service';
 import { NewsSearchParameters } from '../../model/NewsEverythingParameters';
 import { Language } from '../../model/Language';
 import { SortBy } from '../../model/SortBy';
@@ -17,8 +17,8 @@ export const getNewsEverything = middyfy(async (event: APIGatewayProxyEvent): Pr
             to: params.to,
             searchIn: 'title,description',
             language: Language.EN,
-            sortBy: SortBy.RELEVANCY,
-            pageSize: 100,
+            sortBy: SortBy.POPULARITY,
+            pageSize: 10,
             page: 1,
         };
 
