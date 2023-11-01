@@ -12,29 +12,31 @@ let conversationalChatBot = new ConversationalChatBot(OPENAI_API_KEY);
 let retriever: VectorStoreRetriever;
 let chain: RunnableSequence;
 
-export const postNewsSummaryMessage = middyfy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    try {
-        const body = event.body as any;
-        const searchInput = body.searchInput;
+export const postAllNewsSummaryMessage = middyfy(
+    async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+        try {
+            const body = event.body as any;
+            const searchInput = body.searchInput;
 
-        //Turning the news title, description to vector store retriever
+            //Turning the news title, description to vector store retriever
 
-        if (body.articles) {
-            retriever = await conversationalChatBot.articleStringToRetriever(JSON.stringify(body.articles));
+            if (body.articles) {
+                retriever = await conversationalChatBot.articleStringToRetriever(JSON.stringify(body.articles));
+            }
+            chain = await conversationalChatBot.createConversationalChain(retriever);
+
+            const response = await chain.invoke({
+                question: `What is the summary of all the context which is the news about ${searchInput} with a very clear and easy to read answer, please?`,
+            });
+
+            console.log('response.text', response.result);
+            return formatSuccessResponse(response);
+        } catch (e) {
+            console.log('Error in postNewsSummary', e);
+            return formatInternalServerErrorResponse(e);
         }
-        chain = await conversationalChatBot.createConversationalChain(retriever);
-
-        const response = await chain.invoke({
-            question: `What is the summary of all the context which is the news about ${searchInput} with a very clear and easy to read answer, please?`,
-        });
-
-        console.log('response.text', response.result);
-        return formatSuccessResponse(response);
-    } catch (e) {
-        console.log('Error in postNewsSummary', e);
-        return formatInternalServerErrorResponse(e);
-    }
-});
+    },
+);
 
 export const postArticleSummaryMessage = middyfy(
     async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {

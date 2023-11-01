@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 import { getNewsEverything } from '@functions/news';
-import { postArticleSummaryMessage, postNewMessage, postNewsSummaryMessage } from '@functions/chat';
+import { postArticleSummaryMessage, postNewMessage, postAllNewsSummaryMessage } from '@functions/chat';
 
 const serverlessConfiguration: AWS = {
     service: 'news-app-serverless',
@@ -8,7 +8,7 @@ const serverlessConfiguration: AWS = {
     plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-dotenv-plugin'],
     provider: {
         name: 'aws',
-        runtime: 'nodejs14.x',
+        runtime: 'nodejs18.x',
         timeout: 30,
         apiGateway: {
             minimumCompressionSize: 1024,
@@ -48,7 +48,7 @@ const serverlessConfiguration: AWS = {
         },*/
     },
     // import the function via paths
-    functions: { getNewsEverything, postNewsSummaryMessage, postNewMessage, postArticleSummaryMessage },
+    functions: { getNewsEverything, postAllNewsSummaryMessage, postNewMessage, postArticleSummaryMessage },
     package: { individually: true },
     custom: {
         esbuild: {
@@ -56,7 +56,7 @@ const serverlessConfiguration: AWS = {
             minify: false,
             sourcemap: true,
             exclude: ['aws-sdk'],
-            target: 'node14',
+            target: 'node18',
             define: { 'require.resolve': undefined },
             platform: 'node',
             concurrency: 10,

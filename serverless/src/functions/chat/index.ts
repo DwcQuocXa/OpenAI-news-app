@@ -1,7 +1,7 @@
 import { handlerPath } from '@libs/handler-resolver';
 
-export const postNewsSummaryMessage = {
-    handler: `${handlerPath(__dirname)}/handler.postNewsSummaryMessage`,
+export const postAllNewsSummaryMessage = {
+    handler: `${handlerPath(__dirname)}/handler.postAllNewsSummaryMessage`,
     events: [
         {
             http: {
