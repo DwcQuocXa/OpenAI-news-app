@@ -36,7 +36,7 @@ import { VectorStoreRetriever } from 'langchain/dist/vectorstores/base';
 }*/
 
 export class ConversationalChatBot {
-    private readonly memory: BufferMemory;
+    private memory: BufferMemory;
     private readonly questionPrompt: PromptTemplate;
     private readonly questionGeneratorTemplate: PromptTemplate;
     private readonly fasterModel: ChatOpenAI;
@@ -48,13 +48,6 @@ export class ConversationalChatBot {
 
     constructor(openAIApiKey: string) {
         this.openAIApiKey = openAIApiKey;
-
-        this.memory = new BufferMemory({
-            memoryKey: 'chatHistory',
-            inputKey: 'question',
-            outputKey: 'text',
-            returnMessages: true,
-        });
 
         this.questionPrompt = PromptTemplate.fromTemplate(
             `Use the following pieces of context and your knowledge to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
@@ -206,7 +199,12 @@ export class ConversationalChatBot {
     };
 
     createConversationalChain = async (retriever: VectorStoreRetriever) => {
-        console.log('creating chain');
+        this.memory = new BufferMemory({
+            memoryKey: 'chatHistory',
+            inputKey: 'question',
+            outputKey: 'text',
+            returnMessages: true,
+        });
 
         const chain = RunnableSequence.from([
             {

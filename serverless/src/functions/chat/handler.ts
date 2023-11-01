@@ -20,16 +20,13 @@ export const postAllNewsSummaryMessage = middyfy(
 
             //Turning the news title, description to vector store retriever
 
-            if (body.articles) {
-                retriever = await conversationalChatBot.articleStringToRetriever(JSON.stringify(body.articles));
-            }
+            retriever = await conversationalChatBot.articleStringToRetriever(JSON.stringify(body.articles));
             chain = await conversationalChatBot.createConversationalChain(retriever);
 
             const response = await chain.invoke({
-                question: `What is the summary of all the context which is the news about ${searchInput} with a very clear and easy to read answer, please?`,
+                question: `What is the summary of all the context which is the news about ${searchInput} and the relevant information with a very clear and easy to read answer, please?`,
             });
 
-            console.log('response.text', response.result);
             return formatSuccessResponse(response);
         } catch (e) {
             console.log('Error in postNewsSummary', e);
@@ -45,19 +42,12 @@ export const postArticleSummaryMessage = middyfy(
             const searchInput = body.searchInput;
             const selectedArticle = body.selectedArticle;
 
-            console.log('body', body);
-
-            if (selectedArticle) {
-                console.log('selectedArticle', selectedArticle);
-                retriever = await conversationalChatBot.articleUrlToRetriever(selectedArticle.url);
-            }
-
+            retriever = await conversationalChatBot.articleUrlToRetriever(selectedArticle.url);
             chain = await conversationalChatBot.createConversationalChain(retriever);
 
             const response = await chain.invoke({
-                question: `What is the summary of the main content about ${searchInput} with a very clear and easy to read answer, please? The topic should be about ${selectedArticle.title}`,
+                question: `What is the summary of the main content about ${searchInput} and the relevant information with a very clear and easy to read answer, please? The topic should be about ${selectedArticle.title}`,
             });
-            console.log('response.text', response.result);
             return formatSuccessResponse(response);
         } catch (e) {
             console.log('Error in postNewMessage', e);
@@ -73,27 +63,22 @@ export const postNewMessage = middyfy(async (event: APIGatewayProxyEvent): Promi
         const selectedArticle = body.selectedArticle;
 
         if (!retriever) {
-            if (body.articles) {
-                retriever = await conversationalChatBot.articleStringToRetriever(JSON.stringify(body.articles));
-            }
-
             if (selectedArticle) {
-                console.log('selectedArticle', selectedArticle);
                 retriever = await conversationalChatBot.articleUrlToRetriever(selectedArticle.url);
+            } else if (body.articles) {
+                retriever = await conversationalChatBot.articleStringToRetriever(JSON.stringify(body.articles));
             }
         }
 
         if (!chain) {
-            console.log('retriever', retriever);
             chain = await conversationalChatBot.createConversationalChain(retriever);
         }
 
         /*const additionalQuestionString = selectedArticle ? `The topic should be about ${selectedArticle.title}` : '';*/
 
         const response = await chain.invoke({
-            question: `About ${searchInput}, ${body.message}`,
+            question: `About ${searchInput} and the relevant information, ${body.message}`,
         });
-        console.log('response.text', response.result);
         return formatSuccessResponse(response);
     } catch (e) {
         console.log('Error in postNewMessage', e);

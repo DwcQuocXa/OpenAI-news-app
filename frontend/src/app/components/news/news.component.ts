@@ -91,6 +91,7 @@ export class NewsComponent {
             sender: ChatSender.USER,
             content: this.inputForm.value.input,
         });
+
         this.chatService
             .postNewMessage(this.inputForm.value.input, this.searchForm.value.q, this.articles, this.selectedArticle)
             .subscribe({
@@ -116,6 +117,8 @@ export class NewsComponent {
     }
 
     selectArticleToChat(article: Article) {
+        this.chatMessages = [];
+
         this.selectedArticle = article;
 
         this.onNewChatMessage({
