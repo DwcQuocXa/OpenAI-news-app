@@ -16,7 +16,7 @@ Try it now: [News-App Demo](https://news-app-frontend-test.s3.eu-west-1.amazonaw
 - **Frontend**: Angular
 - **Backend**: Serverless Framework
 - **APIs**:
-    - Google API (for news search)
+    - News API (for news search)
     - OpenAI API (for chatbot capabilities)
 - **Cloud Services**: AWS
 
