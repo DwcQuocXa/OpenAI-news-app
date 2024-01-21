@@ -5,6 +5,7 @@ phases:
     runtime-versions:
       nodejs: 16
     commands:
+      - n 18
       - echo installing dependencies
       - cd _infrastructure
       - npm install --legacy-peer-deps

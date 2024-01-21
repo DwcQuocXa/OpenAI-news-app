@@ -73,7 +73,6 @@ export class FrontendPipelineStack extends Stack {
             bucketName: `news-app-frontend-${context.environment}`,
             websiteIndexDocument: 'index.html',
             websiteErrorDocument: 'index.html',
-            publicReadAccess: true,
             removalPolicy: RemovalPolicy.DESTROY,
         });
 
