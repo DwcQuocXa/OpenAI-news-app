@@ -1,7 +1,14 @@
 import * as codepipeline_actions from 'aws-cdk-lib/aws-codepipeline-actions';
 import { Construct } from 'constructs/lib/construct';
 import { ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { BuildSpec, Cache, ComputeType, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
+import {
+    BuildEnvironmentVariableType,
+    BuildSpec,
+    Cache,
+    ComputeType,
+    LinuxBuildImage,
+    PipelineProject,
+} from 'aws-cdk-lib/aws-codebuild';
 import { CodeBuildAction, CodeBuildActionType, S3DeployAction } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Vpc } from 'aws-cdk-lib/aws-ec2/lib/vpc';
@@ -48,8 +55,14 @@ export class FrontendPipelineStack extends Stack {
                 computeType: ComputeType.MEDIUM, // 7 GB memory, 4 vCPUs
                 buildImage: LinuxBuildImage.STANDARD_6_0,
                 privileged: true,
-                environmentVariables: {
-                    API_URL: { value: ecs.Secret.fromSecretsManager(secret, 'API_URL') },
+            },
+            environmentVariables: {
+                /*API_URL: {
+                    value: 'arn:aws:secretsmanager:eu-west-1:476194719932:secret:news-app-frontend-test-H3RZcF:API_URL',
+                    type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+                },*/
+                API_URL: {
+                    value: 'https://m3bv76kni8.execute-api.eu-west-1.amazonaws.com',
                 },
             },
             vpc,

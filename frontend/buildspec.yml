@@ -18,6 +18,9 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building frontend
+      - echo "API_URL is $API_URL"
+      - |
+        sed -i "s|API_URL: ''|API_URL: '$API_URL'|" src/environments/environment.test.ts
       - ng build --configuration=test
 artifacts:
   files:

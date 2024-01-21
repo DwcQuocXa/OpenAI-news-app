@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Article } from '../models/Article';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ChatService {
-    private apiUrl = process.env['API_URL'];
+    private apiUrl = environment.API_URL;
     constructor(private httpService: HttpClient) {}
 
     postNewsSummaryMessage(articles: Article[], searchInput: string): Observable<any> {
