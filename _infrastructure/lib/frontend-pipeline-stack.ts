@@ -1,7 +1,7 @@
 import * as codepipeline_actions from 'aws-cdk-lib/aws-codepipeline-actions';
 import { Construct } from 'constructs/lib/construct';
 import { ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { BuildSpec, ComputeType, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
+import { BuildSpec, Cache, ComputeType, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
 import { CodeBuildAction, CodeBuildActionType, S3DeployAction } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Vpc } from 'aws-cdk-lib/aws-ec2/lib/vpc';
@@ -55,6 +55,7 @@ export class FrontendPipelineStack extends Stack {
             vpc,
             role: buildRole,
             subnetSelection: { subnetType: SubnetType.PRIVATE_WITH_EGRESS },
+            cache: Cache.none(),
         });
 
         buildProject.addToRolePolicy(

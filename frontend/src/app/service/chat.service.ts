@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Article } from '../models/Article';
 
@@ -8,7 +7,7 @@ import { Article } from '../models/Article';
     providedIn: 'root',
 })
 export class ChatService {
-    private apiUrl = environment.apiUrl;
+    private apiUrl = process.env['API_URL'];
     constructor(private httpService: HttpClient) {}
 
     postNewsSummaryMessage(articles: Article[], searchInput: string): Observable<any> {
