@@ -57,13 +57,13 @@ export class FrontendPipelineStack extends Stack {
                 privileged: true,
             },
             environmentVariables: {
-                /*API_URL: {
+                API_URL: {
                     value: 'arn:aws:secretsmanager:eu-west-1:476194719932:secret:news-app-frontend-test-H3RZcF:API_URL',
                     type: BuildEnvironmentVariableType.SECRETS_MANAGER,
-                },*/
-                API_URL: {
-                    value: 'https://m3bv76kni8.execute-api.eu-west-1.amazonaws.com',
                 },
+                /*API_URL: {
+                    value: 'https://m3bv76kni8.execute-api.eu-west-1.amazonaws.com',
+                },*/
             },
             vpc,
             role: buildRole,
