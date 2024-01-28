@@ -132,7 +132,7 @@ export class FrontendPipelineStack extends Stack {
                         new codepipeline_actions.CodeStarConnectionsSourceAction({
                             actionName: 'Github_Source',
                             owner: 'DwcQuocXa',
-                            repo: 'news-app',
+                            repo: 'OpenAI-news-app',
                             branch: 'master',
                             triggerOnPush: true,
                             connectionArn: CODE_STAR_CONNECTION_ARN,
